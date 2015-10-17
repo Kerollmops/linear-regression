@@ -1,8 +1,5 @@
+mod common;
 use std::io::{self, Read, Write};
-
-fn estimate_price(mileage: u32, theta0: f32, theta1: f32) -> u32 {
-    (theta0 + (theta1 * mileage as f32)) as u32
-}
 
 fn ask_mileage() -> u32 {
 
@@ -31,5 +28,6 @@ fn main() {
     let (theta0, theta1) = retrieve_thetas(thetas_file.as_ref());
     let mileage = ask_mileage();
 
-    println!("Estimated price is `{}`", estimate_price(mileage, theta0, theta1));
+    println!("Estimated price is `{}`",
+                common::estimate_price(mileage, theta0, theta1));
 }
