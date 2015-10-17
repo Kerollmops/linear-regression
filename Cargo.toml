@@ -1,0 +1,4 @@
+[package]
+name = "linear-regression"
+version = "0.1.0"
+authors = ["Kerosene2000 <renault.cle@gmail.com>"]
