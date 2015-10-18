@@ -14,7 +14,7 @@ fn ask_mileage() -> u32 {
 
 fn retrieve_thetas(file: &str) -> (f32, f32) {
 
-    (0.56_f32, 3.038_f32)
+    (0.0_f32, 0.0_f32)
 }
 
 fn main() {

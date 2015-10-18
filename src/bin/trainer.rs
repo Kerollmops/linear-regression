@@ -16,7 +16,7 @@ fn train_thetas(learn_rate: f32, thetas: (f32, f32),
         // println!("{}, {}", miles, price);
     }
 
-// common::estimate_price(100, 1.0f32, 1.0f32);
+common::estimate_price(100, 1.0f32, 1.0f32);
 /*
 tmp_theta_0 = learningRate * (1/m) * (sum (estimatePrice(mileage[i]) − price[i]), i=0, m-1)
 tmp_theta_1 = learningRate * (1/m) * (sum (estimatePrice(mileage[i]) − price[i]) * mileage[i], i=0, m-1)
