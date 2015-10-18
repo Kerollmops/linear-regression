@@ -14,17 +14,18 @@ fn ask_mileage() -> u32 {
 
 fn retrieve_thetas(file: &str) -> (f32, f32) {
 
-    (0.56f32, 3.038)
+    (0.56_f32, 3.038_f32)
 }
 
 fn main() {
 
+    // TODO: no in /tmp !!!
     let mut thetas_file = "/tmp/thetas.csv".to_string();
     if let Some(arg1) = std::env::args().nth(1) {
         thetas_file = arg1;
     }
 
-    // recovering data
+    // retrieving data
     let (theta0, theta1) = retrieve_thetas(thetas_file.as_ref());
     let mileage = ask_mileage();
 
