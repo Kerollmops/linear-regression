@@ -21,7 +21,7 @@ fn save_thetas(file: &str, theta0: f32, theta1: f32) {
 
     let mut wtr = csv::Writer::from_file(file).unwrap();
 
-    let result = wtr.encode(("thetas0", "thetas1"));
+    let result = wtr.encode(("theta0", "theta1"));
     assert!(result.is_ok());
 
     let result = wtr.encode((theta0, theta1));
@@ -33,7 +33,6 @@ fn main() {
 
     if let Some(filename) = std::env::args().nth(1) {
 
-        // retrieving data
         let mut rdr = csv::Reader::from_file(filename).unwrap();
         let data = rdr.decode().collect::<csv::Result<Vec<(u32, u32)>>>().unwrap();
 
