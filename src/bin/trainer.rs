@@ -1,10 +1,11 @@
 extern crate csv;
 mod common;
 
-fn train_thetas(learn_rate: f32, thetas: (f32, f32),
+fn train_thetas(learn_rate: f32, theta0: f32, theta1: f32,
                 data: Vec<(u32, u32)>) -> (f32, f32) {
 
-    let (mut theta0, mut theta1) = thetas;
+    let mut tmp_theta0 = theta0;
+    let mut tmp_theta1 = theta1;
     let m = data.len();
     for (miles, price) in data {
 
@@ -16,11 +17,7 @@ fn train_thetas(learn_rate: f32, thetas: (f32, f32),
         // println!("{}, {}", miles, price);
     }
 
-common::estimate_price(100, 1.0f32, 1.0f32);
-/*
-tmp_theta_0 = learningRate * (1/m) * (sum (estimatePrice(mileage[i]) − price[i]), i=0, m-1)
-tmp_theta_1 = learningRate * (1/m) * (sum (estimatePrice(mileage[i]) − price[i]) * mileage[i], i=0, m-1)
-*/
+    common::estimate_price(100, 1.0f32, 1.0f32);
 
     //
     (0.0_f32, 0.0_f32)
@@ -39,11 +36,11 @@ fn main() {
     let learn_rate = 0.2_f32;
 
     // if theta not created then write zero in theta file...
-    let start_thetas = (0.0_f32, 0.0_f32);
+    let theta0 = 0.0_f32;
+    let theta1 = 0.0_f32;
 
-
-    let (theta0, theta1) = train_thetas(learn_rate, start_thetas, data);
-    println!("After computation: ({}, {})", theta0, theta1);
+    let (trained_theta0, trained_theta1) = train_thetas(learn_rate, theta0, theta1, data);
+    println!("After computation: ({}, {})", trained_theta0, trained_theta1);
 
     // save computed thetas
     // ...
