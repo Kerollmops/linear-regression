@@ -26,7 +26,7 @@ fn loop_train_thetas(learn_rate: f32, theta0: f32, theta1: f32,
     let mut theta1 = theta1;
 
     // while error > 0.03_f32 {
-    for _ in 0..10_000 {
+    for _ in 0..50_000 {
 
         let (tmp_theta0, tmp_theta1) = train_thetas(learn_rate, theta0, theta1, &data);
 
