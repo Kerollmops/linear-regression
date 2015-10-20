@@ -1,15 +1,27 @@
+extern crate csv;
+use std::io::{self, Write};
 mod common;
-use std::io::{self, Read, Write};
 
 fn ask_mileage() -> u32 {
 
     print!("Enter the mileage you want to estimate: ");
-    io::stdout().flush();
+    io::stdout().flush().unwrap();
 
     let mut buffer = String::new();
     io::stdin().read_line(&mut buffer).ok().expect("Failed to read stdin");
     buffer = buffer.split_whitespace().nth(0).expect("Failed to get first word").to_string();
-    buffer.parse().ok().expect("Wanted a number")
+    buffer.parse().ok().expect("Wanted a positive number")
+}
+
+pub fn retrieve_thetas(file: &str) -> Option<(f32, f32)> {
+
+    if let Ok(mut rdr) = csv::Reader::from_file(file) {
+
+        if let Ok(ret) = rdr.decode().nth(0).unwrap() {
+            return Some(ret);
+        }
+    }
+    None
 }
 
 fn main() {
@@ -20,7 +32,7 @@ fn main() {
     }
 
     // retrieving data
-    let (theta0, theta1) = common::retrieve_thetas(thetas_file.as_ref())
+    let (theta0, theta1) = retrieve_thetas(thetas_file.as_ref())
                            .unwrap_or((0_f32, 0_f32));
     let mileage = ask_mileage();
 
