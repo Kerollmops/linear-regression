@@ -55,7 +55,6 @@ fn main() {
     opts.optopt("m", "mileage", "set directly the mileage you want to estimate, default `stdin`", "VALUE");
     opts.optopt("", "tmp-file-thetas", format!("set the file where you want to read thetas values, default {}", common::TMP_FILE_THETAS).as_ref(), "FILE");
     opts.optopt("", "tmp-file-min-max", format!("set the file where you want to read min-max values, default {}", common::TMP_FILE_MIN_MAX).as_ref(), "FILE");
-    opts.optflag("g", "graph", "display a graph representing the data and the curve found");
     opts.optflag("h", "help", "print this help menu");
 
     let matches = match opts.parse(&args[1..]) {
