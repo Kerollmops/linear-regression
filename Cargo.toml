@@ -5,3 +5,4 @@ authors = ["Kerosene2000 <renault.cle@gmail.com>"]
 
 [dependencies]
 csv = "0.14.3"
+getopts = "0.2.14"
