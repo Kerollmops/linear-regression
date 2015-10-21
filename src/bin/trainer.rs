@@ -1,6 +1,10 @@
 extern crate csv;
 extern crate getopts;
+extern crate gnuplot;
+
+use gnuplot::{Figure, Caption, Color};
 use getopts::Options;
+
 mod common;
 
 fn train_thetas(learn_rate: f32, theta0: f32, theta1: f32,
@@ -96,7 +100,6 @@ fn print_usage(program: &str, opts: Options) {
     print!("{}", opts.usage(&brief));
 }
 
-// https://github.com/SiegeLord/RustGnuplot
 fn main() {
 
     let args: Vec<String> = std::env::args().collect();
@@ -109,6 +112,7 @@ fn main() {
     opts.optopt("", "tmp-file-min-max", format!("set the file where you want to save min-max values, default {}", common::TMP_FILE_MIN_MAX).as_ref(), "FILE");
     opts.optflag("g", "graph", "display a graph representing the data and the curve found");
     opts.optflag("h", "help", "print this help menu");
+
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => { m }
         Err(f) => { panic!(f.to_string()) }
@@ -137,4 +141,15 @@ fn main() {
     let tmp_file_min_max = matches.opt_str("tmp-file-min-max").unwrap_or(common::TMP_FILE_MIN_MAX.to_string());
     save_thetas(tmp_file_thetas.as_ref(), trained_theta0, trained_theta1);
     save_min_max(tmp_file_min_max.as_ref(), min_max.0, min_max.1);
+
+    if matches.opt_present("g") {
+
+        let x = [0u32, 1, 2];
+        let y = [3u32, 4, 5];
+        let mut fg = Figure::new();
+        fg.axes2d().lines(&x, &y, &[Caption("A line"), Color("black")]);
+        fg.show();
+
+        return;
+    }
 }
