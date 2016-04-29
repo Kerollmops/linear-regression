@@ -7,7 +7,7 @@ use std::f32;
 
 mod common;
 
-fn ask_mileage() -> u32 {
+fn ask_mileage() -> f32 {
 
     print!("Enter the mileage you want to estimate: ");
     io::stdout().flush().unwrap();
@@ -76,7 +76,7 @@ fn main() {
 
     let mileage: f32 = match matches.opt_str("m") {
         Some(value) => value.parse().ok().expect("Option `-m` need a number..."),
-        None => ask_mileage() as f32
+        None => ask_mileage()
     };
 
     let normed_mileage = common::normalize(mileage, min, max);

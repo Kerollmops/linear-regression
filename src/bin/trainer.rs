@@ -4,11 +4,12 @@ extern crate gnuplot;
 
 use gnuplot::{Figure, Caption, Color};
 use getopts::Options;
+use std::f32;
 
 mod common;
 
 fn train_thetas(learn_rate: f32, theta0: f32, theta1: f32,
-                norm_data: &Vec<(f32, u32)>) -> (f32, f32) {
+                norm_data: &Vec<(f32, f32)>) -> (f32, f32) {
 
     let m = norm_data.len() as f32;
     let mut sum0 = 0_f32;
@@ -18,13 +19,13 @@ fn train_thetas(learn_rate: f32, theta0: f32, theta1: f32,
 
         let d = (common::estimate_price(miles, theta0, theta1) - price as f32) as f32;
         sum0 += d;
-        sum1 += d * miles as f32;
+        sum1 += d * miles;
     }
     (learn_rate * (1_f32 / m) * sum0, learn_rate * (1_f32 / m) * sum1)
 }
 
 fn loop_train_thetas(learn_rate: f32, theta0: f32, theta1: f32,
-                     norm_data: &Vec<(f32, u32)>) -> (f32, f32) {
+                     norm_data: &Vec<(f32, f32)>) -> (f32, f32) {
 
     let mut theta0 = theta0;
     let mut theta1 = theta1;
@@ -61,9 +62,9 @@ fn save_min_max(file: &str, min: f32, max: f32) {
     assert!(result.is_ok());
 }
 
-fn min_tuple0(data: &Vec<(u32, u32)>) -> u32 {
+fn min_tuple0(data: &Vec<(f32, f32)>) -> f32 {
 
-    let mut ret = u32::max_value();
+    let mut ret = f32::MAX;
     for &(val, _) in data {
         if val < ret {
             ret = val;
@@ -72,9 +73,9 @@ fn min_tuple0(data: &Vec<(u32, u32)>) -> u32 {
     ret
 }
 
-fn max_tuple0(data: &Vec<(u32, u32)>) -> u32 {
+fn max_tuple0(data: &Vec<(f32, f32)>) -> f32 {
 
-    let mut ret = u32::min_value();
+    let mut ret = f32::MIN;
     for &(val, _) in data {
         if val > ret {
             ret = val;
@@ -83,14 +84,14 @@ fn max_tuple0(data: &Vec<(u32, u32)>) -> u32 {
     ret
 }
 
-fn normalize_data(data: &Vec<(u32, u32)>, out: &mut Vec<(f32, u32)>, min_max: (f32, f32)) {
+fn normalize_data(data: &Vec<(f32, f32)>, out: &mut Vec<(f32, f32)>, min_max: (f32, f32)) {
 
     // let min = min_tuple0(data) as f32;
     // let max = max_tuple0(data) as f32;
     let (min, max) = min_max;
     out.clear();
     for &(miles, price) in data {
-        out.push( (common::normalize(miles as f32, min, max), price) );
+        out.push( (common::normalize(miles, min, max), price) );
     }
 }
 
@@ -125,10 +126,10 @@ fn main() {
 
     let filename = matches.opt_str("d").unwrap();
     let mut rdr = csv::Reader::from_file(filename).unwrap();
-    let data = rdr.decode().collect::<csv::Result<Vec<(u32, u32)>>>().unwrap();
+    let data = rdr.decode().collect::<csv::Result<Vec<(f32, f32)>>>().unwrap();
 
-    let min_max = (min_tuple0(&data) as f32, max_tuple0(&data) as f32);
-    let mut norm_data: Vec<(f32, u32)> = Vec::with_capacity(data.len());
+    let min_max = (min_tuple0(&data), max_tuple0(&data));
+    let mut norm_data: Vec<(f32, f32)> = Vec::with_capacity(data.len());
     normalize_data(&data, &mut norm_data, min_max);
 
     let learn_rate: f32 = matches.opt_str("l").unwrap_or("0.1".to_string()).parse().ok().expect("We want a number...");
